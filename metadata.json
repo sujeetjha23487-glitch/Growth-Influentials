@@ -1,0 +1,6 @@
+{
+  "name": "Grow Influentials",
+  "description": "Premium influencer marketing platform and portfolio website for agencies and brands looking to scale their story.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
