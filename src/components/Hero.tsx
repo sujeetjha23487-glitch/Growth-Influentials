@@ -60,14 +60,6 @@ export default function Hero({ onCtas }: HeroProps) {
       <div className="relative max-w-5xl mx-auto px-6 w-full z-10 text-center flex flex-col items-center">
         {/* LEFT TEXT CONTENT (centered) */}
         <div className="flex flex-col items-center">
-          {/* Tagline Badge */}
-          <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-1.5 w-fit mb-6 animate-pulse">
-            <Sparkles className="w-3.5 h-3.5 text-primary" />
-            <span className="font-sans text-[10px] tracking-widest uppercase font-semibold text-primary">
-              Premium Creator Matchmaking
-            </span>
-          </div>
-
           <h1 className="font-display font-bold text-4xl md:text-5xl lg:text-6xl text-text-dark leading-[1.08] tracking-tight mb-6 max-w-4xl">
             We Help Brands <span className="text-primary">Scale Their Story</span> With the Right Influencers
           </h1>

@@ -2,7 +2,7 @@ import { Linkedin, Instagram, Twitter, Youtube, ArrowUp } from 'lucide-react';
 
 export default function Footer() {
   const socialIcons = [
-    { icon: Linkedin, href: '#' },
+    { icon: Linkedin, href: 'https://www.linkedin.com/company/grow-influentials/' },
     { icon: Instagram, href: '#' },
     { icon: Twitter, href: '#' },
     { icon: Youtube, href: '#' }

@@ -19,77 +19,6 @@ export default function ContactForm({ onAddLead }: ContactFormProps) {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  /* Google Sheets Integration state */
-  const [showSyncSettings, setShowSyncSettings] = useState(false);
-  const [webhookUrl, setWebhookUrl] = useState(() => localStorage.getItem('grow_sheet_webhook_url') || '');
-  const [copiedScript, setCopiedScript] = useState(false);
-  const [testSuccess, setTestSuccess] = useState<boolean | null>(null);
-  const [testingConnection, setTestingConnection] = useState(false);
-
-  const googleAppsScriptCode = `/* Google Apps Script to copy & paste into Extensions -> Apps Script */
-function doPost(e) {
-  try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    var data = JSON.parse(e.postData.contents);
-    sheet.appendRow([
-      new Date().toLocaleString(),
-      data.id || "",
-      data.name || "",
-      data.email || "",
-      data.brandName || "",
-      data.website || "",
-      data.budget || "",
-      data.message || ""
-    ]);
-    return ContentService.createTextOutput(JSON.stringify({ "result": "success" }))
-      .setMimeType(ContentService.MimeType.JSON);
-  } catch (error) {
-    return ContentService.createTextOutput(JSON.stringify({ "result": "error", "error": error.toString() }))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
-}`;
-
-  const handleSaveWebhook = (url: string) => {
-    localStorage.setItem('grow_sheet_webhook_url', url.trim());
-    setWebhookUrl(url.trim());
-    setTestSuccess(null);
-  };
-
-  const handleTestConnection = async () => {
-    if (!webhookUrl) return;
-    setTestingConnection(true);
-    setTestSuccess(null);
-    try {
-      const payload = {
-        id: "TEST-SYNC",
-        name: "Test Connection",
-        email: "test@growthinfluentialas.com",
-        brandName: "Agency Sheet Sync",
-        website: "https://growthinfluentialas.com",
-        budget: "N/A",
-        message: "Sheet sync validation system test"
-      };
-      await fetch(webhookUrl, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-      setTestSuccess(true);
-    } catch (e) {
-      console.error(e);
-      setTestSuccess(false);
-    } finally {
-      setTestingConnection(false);
-    }
-  };
-
-  const handleCopyScript = () => {
-    navigator.clipboard.writeText(googleAppsScriptCode);
-    setCopiedScript(true);
-    setTimeout(() => setCopiedScript(false), 3000);
-  };
-
   const submitForm = () => {
     const nameEl = document.getElementById("inp-name") as HTMLInputElement;
     const emailEl = document.getElementById("inp-email") as HTMLInputElement;
@@ -223,7 +152,7 @@ function doPost(e) {
                     <Phone className="w-4 h-4 text-primary" />
                   </div>
                   <div>
-                    <h5 className="font-bold text-text-dark">Hotline Support</h5>
+                    <h5 className="font-bold text-text-dark">Phone Number</h5>
                     <p className="text-text-muted text-[11px] font-mono select-all">+91 9315189074</p>
                   </div>
                 </div>
@@ -248,110 +177,10 @@ function doPost(e) {
             >
                 
                 {/* Visual Header */}
-                <div className="border-b border-border/40 pb-4 flex items-center justify-between">
-                  <div>
-                    <h3 className="font-display font-black text-lg text-text-dark">Inquiry Details</h3>
-                    <p className="text-[10px] text-text-muted mt-1 uppercase tracking-widest font-semibold">Scale Your Story With Us</p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setShowSyncSettings(!showSyncSettings)}
-                    className="p-2 text-text-muted hover:text-primary transition-colors hover:bg-surface rounded-xl border border-transparent hover:border-border/60 cursor-pointer flex items-center gap-1.5 text-[11px] font-semibold"
-                    title="Google Sheets Automation Sync Settings"
-                  >
-                    <Settings className={`w-4 h-4 text-text-dark hover:text-primary ${showSyncSettings ? 'animate-spin' : ''}`} />
-                    <span className="hidden sm:inline text-[10px] text-text-muted font-bold tracking-wider uppercase">Sheet Sync</span>
-                  </button>
+                <div className="border-b border-border/40 pb-4">
+                  <h3 className="font-display font-black text-lg text-text-dark">Inquiry Details</h3>
+                  <p className="text-[10px] text-text-muted mt-1 uppercase tracking-widest font-semibold">Scale Your Story With Us</p>
                 </div>
-
-                {/* Google Sheets Automation Widget */}
-                {showSyncSettings && (
-                  <div className="bg-surface rounded-2xl p-4.5 border border-border/70 flex flex-col gap-4 animate-fade-in text-xs text-left">
-                    <div className="flex items-center justify-between">
-                      <h4 className="font-display font-extrabold text-sm text-text-dark flex items-center gap-1.5">
-                        <span>📊 Google Sheet Sync Automation</span>
-                      </h4>
-                      <button
-                        type="button"
-                        onClick={() => setShowSyncSettings(false)}
-                        className="text-[10px] font-bold text-primary hover:underline cursor-pointer"
-                      >
-                        Minimize
-                      </button>
-                    </div>
-
-                    <p className="text-[11px] text-text-body leading-relaxed">
-                      Automatically route form bookings and quick CTA submissions to your targeted Google Sheet:
-                      <br />
-                      <a
-                        href="https://docs.google.com/spreadsheets/d/1uHb2ANN5La-crXUcrdZ4BsZKgJz77Rtr9db6x6U2PTc/edit?usp=sharing"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-primary font-semibold hover:underline break-all mt-1 inline-block"
-                      >
-                        1uHb2ANN5La-crXUcrdZ4BsZKgJz77Rtr9db6x6U2PTc
-                      </a>
-                    </p>
-
-                    <div className="flex flex-col gap-2 bg-white rounded-xl p-3 border border-border/50">
-                      <span className="font-bold text-[10px] text-text-dark uppercase tracking-wide">
-                        1. Copy Google Apps Script
-                      </span>
-                      <p className="text-[10px] text-text-muted">
-                        In your spreadsheet, go to <span className="font-semibold text-text-dark">Extensions → Apps Script</span>, delete any existing placeholder code, and paste this verified snippet:
-                      </p>
-                      <div className="relative mt-1">
-                        <pre className="bg-background text-[10px] text-text-body font-mono p-3 rounded-lg overflow-x-auto border border-border/60 max-h-36">
-                          {googleAppsScriptCode}
-                        </pre>
-                        <button
-                          type="button"
-                          onClick={handleCopyScript}
-                          className="absolute top-2 right-2 bg-primary hover:bg-primary-mid text-white px-2.5 py-1 rounded text-[10px] font-bold flex items-center gap-1 cursor-pointer select-none transition-all"
-                        >
-                          {copiedScript ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                          {copiedScript ? 'Copied!' : 'Copy Code'}
-                        </button>
-                      </div>
-                      <p className="text-[10px] text-text-muted font-bold mt-1">
-                        👉 Click "Deploy" → "New deployment" → Choose type "Web App" → Set "Execute as: Me" and "Who has access: Anyone" → Deploy & click Authorize!
-                      </p>
-                    </div>
-
-                    <div className="flex flex-col gap-2">
-                      <label className="text-[10px] font-bold uppercase tracking-wider text-text-muted flex items-center gap-1.5">
-                        <span>2. Paste Deployed Web App URL</span>
-                      </label>
-                      <div className="flex gap-2">
-                        <input
-                          type="url"
-                          placeholder="e.g. https://script.google.com/macros/s/AKfycb.../exec"
-                          value={webhookUrl}
-                          onChange={(e) => handleSaveWebhook(e.target.value)}
-                          className="flex-1 bg-white border border-border rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-primary-mid text-text-dark font-medium placeholder:text-text-muted/50"
-                        />
-                        <button
-                          type="button"
-                          disabled={!webhookUrl || testingConnection}
-                          onClick={handleTestConnection}
-                          className="px-4 py-2 bg-text-dark hover:bg-text-body text-white font-bold rounded-xl text-[11px] transition-all disabled:opacity-40 flex items-center gap-1 cursor-pointer"
-                        >
-                          {testingConnection ? 'Testing...' : 'Test Connection'}
-                        </button>
-                      </div>
-                      {testSuccess === true && (
-                        <p className="text-[10px] text-primary font-bold flex items-center gap-1">
-                          <Check className="w-3.5 h-3.5" /> Webhook saved! A sync test-payload has been dispatched.
-                        </p>
-                      )}
-                      {testSuccess === false && (
-                        <p className="text-[10px] text-red-500 font-bold">
-                          ⚠️ Sync Connection tested. Please ensure Apps Script allows Anyone (including anonymous) access.
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                )}
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   {/* Name */}
