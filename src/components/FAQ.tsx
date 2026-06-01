@@ -39,7 +39,7 @@ export default function FAQ() {
     {
       id: 7,
       question: 'What’s the minimum budget to get started?',
-      answer: 'Our base campaign execution package starts at $1,500/month (Discovery tier). This is ideal for testing target creative briefs or Micro pools with high organic efficacy.'
+      answer: 'Our base campaign execution package starts at ₹1,25,000/month (Discovery tier). This is ideal for testing target creative briefs or Micro pools with high organic efficacy.'
     }
   ];
 

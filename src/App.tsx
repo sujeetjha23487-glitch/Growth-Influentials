@@ -43,7 +43,7 @@ export default function App() {
         email: 'sarah@solsticewear.com',
         brandName: 'Solstice Wear',
         website: 'https://solsticewear.com',
-        budget: 'Growth Machine ($2.8k-3.5k)',
+        budget: 'Growth Machine (₹2.3 Lakh - ₹2.9 Lakh)',
         message: 'We are launching our clean summer swimwear line in June and need 12-15 active fashion/travel creators who can model eco-friendly values in tropical contexts.',
         submittedAt: new Date(Date.now() - 24 * 3600 * 1000).toISOString() // 1 day ago
       },
@@ -53,7 +53,7 @@ export default function App() {
         email: 'james@drinkelixir.com',
         brandName: 'Elixir Soda',
         website: 'https://drinkelixir.co',
-        budget: 'Starter Discovery ($1.2k-1.5k)',
+        budget: 'Starter Discovery (₹1 Lakh - ₹1.25 Lakh)',
         message: 'Looking to seed 5-8 lifestyle/fitness micro creators to model our sugar-free organic carbonated sodas on TikTok and Instagram Reels.',
         submittedAt: new Date(Date.now() - 4 * 3600 * 1000).toISOString() // 4 hours ago
       }
